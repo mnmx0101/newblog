@@ -1,0 +1,681 @@
+<!DOCTYPE html>
+<html
+  dir="ltr"
+  lang="en"
+  data-theme=""
+  class="html"
+><head>
+  <title>
+    
+      
+        Food Insecurity Index Creation |
+
+      
+      Chungmann Kim
+
+
+    
+  </title>
+
+  
+  <meta charset="utf-8" /><meta name="generator" content="Hugo 0.93.0" /><meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover" />
+  <meta
+    name="description"
+    content="
+      Development Economist in the making
+
+
+    "
+  />
+  
+  
+    
+    
+    <link
+      rel="stylesheet"
+      href="/scss/main.min.887981ea8ee463aed275e813b62ca5ceba5547658ae54bc026235d498d7503d6.css"
+      integrity="sha256-iHmB6o7kY67SdegTtiylzrpVR2WK5UvAJiNdSY11A9Y="
+      crossorigin="anonymous"
+      type="text/css"
+    />
+
+  
+
+  
+  <link
+    rel="stylesheet"
+    href="/css/markupHighlight.min.31b0a1f317f55c529a460897848c97436bb138b19c399b37de70d463a8bf6ed5.css"
+    integrity="sha256-MbCh8xf1XFKaRgiXhIyXQ2uxOLGcOZs33nDUY6i/btU="
+    crossorigin="anonymous"
+    type="text/css"
+  />
+  
+  
+  <link
+    rel="stylesheet"
+    href="/fontawesome/css/fontawesome.min.69685904d5c2a0c6258d03c207b778c10466edf6cea928cc0164c376b0ad0930.css"
+    integrity="sha256-aWhZBNXCoMYljQPCB7d4wQRm7fbOqSjMAWTDdrCtCTA="
+    crossorigin="anonymous"
+    type="text/css"
+  />
+  
+  <link
+    rel="stylesheet"
+    href="/fontawesome/css/solid.min.6d585e78d28cce1200d39fb133c92ed83df01738da721d0f48fb6eac62d24e04.css"
+    integrity="sha256-bVheeNKMzhIA05&#43;xM8ku2D3wFzjach0PSPturGLSTgQ="
+    crossorigin="anonymous"
+    type="text/css"
+  />
+  
+  <link
+    rel="stylesheet"
+    href="/fontawesome/css/brands.min.6b00d96498d59caa0dbcf9b49d30d821915291f2ceb0e19248523c8607ff43fa.css"
+    integrity="sha256-awDZZJjVnKoNvPm0nTDYIZFSkfLOsOGSSFI8hgf/Q/o="
+    crossorigin="anonymous"
+    type="text/css"
+  />
+  
+  <link rel="shortcut icon" href="/favicons/favicon.ico" type="image/x-icon" />
+  <link rel="apple-touch-icon" sizes="180x180" href="/favicons/apple-touch-icon.png" />
+  <link rel="icon" type="image/png" sizes="32x32" href="/favicons/favicon-32x32.png" />
+  <link rel="icon" type="image/png" sizes="16x16" href="/favicons/favicon-16x16.png" />
+
+  <link rel="canonical" href="https://example.com/post/2020-12-01-r-rmarkdown/" />
+
+  
+  
+  
+  
+  <script
+    type="text/javascript"
+    src="/js/anatole-header.min.f9132794301a01ff16550ed66763482bd848f62243d278f5e550229a158bfd32.js"
+    integrity="sha256-&#43;RMnlDAaAf8WVQ7WZ2NIK9hI9iJD0nj15VAimhWL/TI="
+    crossorigin="anonymous"
+  ></script>
+
+  
+    
+    
+    <script
+      type="text/javascript"
+      src="/js/anatole-theme-switcher.min.560a26330d27ff44a44e83b53cd07a95d4230a65930d31c5c76a8d481e5b35bf.js"
+      integrity="sha256-VgomMw0n/0SkToO1PNB6ldQjCmWTDTHFx2qNSB5bNb8="
+      crossorigin="anonymous"
+    ></script>
+
+  
+
+  
+
+
+  
+  <meta name="twitter:card" content="summary_large_image"/>
+<meta name="twitter:image" content="https://example.com/images/site-feature-image.png"/>
+
+<meta name="twitter:title" content="Food Insecurity Index Creation"/>
+<meta name="twitter:description" content="Wrangling Living Standards Measurement Survey(LSMS) Workbank DataThis r code chunk links different data sources together and creates a single dataframe with multiple food insecurity measures(e."/>
+
+
+
+  
+
+
+  
+  
+  
+  
+  <script type="application/ld+json">
+    {
+        "@context": "http://schema.org",
+        "@type": "BlogPosting",
+        "articleSection": "post",
+        "name": "Food Insecurity Index Creation",
+        "headline": "Food Insecurity Index Creation",
+        "alternativeHeadline": "",
+        "description": "
+      
+        Wrangling Living Standards Measurement Survey(LSMS) Workbank Data\rThis r code chunk links different data sources together and creates a single dataframe with multiple food insecurity measures(e.
+
+
+      
+
+
+    ",
+        "inLanguage": "en",
+        "isFamilyFriendly": "true",
+        "mainEntityOfPage": {
+            "@type": "WebPage",
+            "@id": "https:\/\/example.com\/post\/2020-12-01-r-rmarkdown\/"
+        },
+        "author" : {
+            "@type": "Person",
+            "name": "Chungmann Kim"
+        },
+        "creator" : {
+            "@type": "Person",
+            "name": "Chungmann Kim"
+        },
+        "accountablePerson" : {
+            "@type": "Person",
+            "name": "Chungmann Kim"
+        },
+        "copyrightHolder" : {
+            "@type": "Person",
+            "name": "Chungmann Kim"
+        },
+        "copyrightYear" : "2022",
+        "dateCreated": "2022-03-08T00:00:00.00Z",
+        "datePublished": "2022-03-08T00:00:00.00Z",
+        "dateModified": "2022-03-08T00:00:00.00Z",
+        "publisher":{
+            "@type":"Organization",
+            "name": "Chungmann Kim",
+            "url": "https://example.com",
+            "logo": {
+                "@type": "ImageObject",
+                "url": "https:\/\/example.com\/favicons\/favicon-32x32.png",
+                "width":"32",
+                "height":"32"
+            }
+        },
+        "image": 
+      [
+        
+        "https://example.com/images/site-feature-image.png"
+
+
+      
+      ]
+
+    ,
+        "url" : "https:\/\/example.com\/post\/2020-12-01-r-rmarkdown\/",
+        "wordCount" : "933",
+        "genre" : [ 
+      
+      "R"
+
+    ],
+        "keywords" : [ 
+      
+      "LSMS"
+
+    
+      
+        ,
+
+      
+      "R Markdown"
+
+    
+      
+        ,
+
+      
+      "Food Security"
+
+    
+      
+        ,
+
+      
+      "Malawi"
+
+    ]
+    }
+  </script>
+
+
+
+</head>
+<body
+    
+      class="body theme--light"
+
+    
+  >
+    <div class="wrapper">
+      <aside class="wrapper__sidebar"><div
+  class="sidebar
+    animated fadeInDown
+
+  "
+>
+  <div class="sidebar__content">
+    <div class="sidebar__introduction">
+      <img
+        class="sidebar__introduction-profileimage"
+        src="/images/manny_pic.jpg"
+        alt="profile picture"
+      />
+      <h1 class="sidebar__introduction-title">
+        <a href="/">Chungmann Kim</a>
+      </h1>
+      <div class="sidebar__introduction-description">
+        <p>Development Economist in the making</p>
+      </div>
+    </div>
+    <ul class="sidebar__list">
+      
+        <li class="sidebar__list-item">
+          <a href="https://scholar.google.co.uk/citations?hl=en&amp;user=lWfMqkoAAAAJ" rel="me" aria-label="Google Scholar" title="Google Scholar">
+            <i class="fab fa-google fa-2x" aria-hidden="true"></i>
+          </a>
+        </li>
+
+      
+        <li class="sidebar__list-item">
+          <a href="https://github.com/mnmx0101" rel="me" aria-label="GitHub" title="GitHub">
+            <i class="fab fa-github fa-2x" aria-hidden="true"></i>
+          </a>
+        </li>
+
+      
+        <li class="sidebar__list-item">
+          <a href="mailto:ck24@illinois.edu" rel="me" aria-label="e-mail" title="e-mail">
+            <i class="fas fa-envelope fa-2x" aria-hidden="true"></i>
+          </a>
+        </li>
+
+      
+    </ul>
+  </div><footer class="footer footer__sidebar">
+  <ul class="footer__list">
+    <li class="footer__item">
+      &copy;
+      
+        Chungmann Kim
+        2022
+
+
+      
+    </li>
+    
+      <li class="footer__item">
+        <a
+          class="link"
+          href="/imprint/"
+          
+          title=""
+        >
+          imprint
+        </a>
+      </li>
+
+    
+  </ul>
+</footer>
+  
+  <script
+    type="text/javascript"
+    src="/js/medium-zoom.min.a3fd0638ada4e3cec287e49a604b4a828cfef33a669afe60b96575761fff5cf3.js"
+    integrity="sha256-o/0GOK2k487Ch&#43;SaYEtKgoz&#43;8zpmmv5guWV1dh//XPM="
+    crossorigin="anonymous"
+  ></script></div>
+</aside>
+      <main class="wrapper__main">
+        <header class="header"><div
+  class="
+    animated fadeInDown
+
+  "
+>
+  <a role="button" class="navbar-burger" data-target="navMenu" aria-label="menu" aria-expanded="false">
+    <span aria-hidden="true" class="navbar-burger__line"></span>
+    <span aria-hidden="true" class="navbar-burger__line"></span>
+    <span aria-hidden="true" class="navbar-burger__line"></span>
+  </a>
+  <nav class="nav">
+    <ul class="nav__list" id="navMenu">
+      
+      
+        
+        <li class="nav__list-item">
+          <a
+            
+            href="/"
+            
+            title=""
+            >Home</a
+          >
+        </li>
+
+      
+        
+        <li class="nav__list-item">
+          <a
+            
+            href="/about/"
+            
+            title=""
+            >About</a
+          >
+        </li>
+
+      
+        
+        <li class="nav__list-item">
+          <a
+            
+            href="/portfolio/"
+            
+            title=""
+            >Research</a
+          >
+        </li>
+
+      
+        
+        <li class="nav__list-item">
+          <a
+            
+            href="/post/"
+            
+            title=""
+            >Post</a
+          >
+        </li>
+
+      
+        
+        <li class="nav__list-item">
+          <a
+            
+            href="/contact/"
+            
+            title=""
+            >Contact</a
+          >
+        </li>
+
+      
+    </ul>
+    <ul class="nav__list nav__list--end">
+      
+      
+        <li class="nav__list-item">
+          <div class="themeswitch">
+            <a title="Switch Theme">
+              <i class="fas fa-adjust fa-fw" aria-hidden="true"></i>
+            </a>
+          </div>
+        </li>
+
+      
+    </ul>
+  </nav>
+</div>
+</header>
+  <div
+    class="post 
+      animated fadeInDown
+
+    "
+  >
+    
+    <div class="post__content">
+      <h1>Food Insecurity Index Creation</h1>
+      
+        <ul class="post__meta">
+          <li class="post__meta-item">
+            <em class="fas fa-calendar-day post__meta-icon"></em>
+            <span class="post__meta-text"
+              >
+                8/3/2022
+
+
+              
+            </span>
+          </li>
+          <li class="post__meta-item">
+            <em class="fas fa-stopwatch post__meta-icon"></em>
+            <span class="post__meta-text">5-minute read</span>
+          </li>
+        </ul>
+
+      
+<script src="https://example.com/post/2020-12-01-r-rmarkdown/index.en_files/header-attrs/header-attrs.js"></script>
+
+
+<div id="wrangling-living-standards-measurement-surveylsms-workbank-data" class="section level1">
+<h1>Wrangling Living Standards Measurement Survey(LSMS) Workbank Data</h1>
+<p>This r code chunk links different data sources together and creates a single dataframe with multiple food insecurity measures(e.g. Food consumption score(FCS), Household Diet Diverssity Score(HDDS), reduced Coping Strategy Index (rCSI)) computed and several other rosters that identify each observation.</p>
+<pre class="r"><code>#####################################################################
+########################    Malawi 2010    ##########################
+#####################################################################
+
+######################################################################
+##################### 1. Food security index #########################
+######################################################################
+
+### (1) Find data and recode
+
+path = &quot;data/Malawi_2010/&quot;
+
+mw10.food &lt;- read_dta(file = paste(path,&quot;Household_Batch3of5_DTA/HH_MOD_G2.dta&quot;,sep = &quot;&quot; ) )
+
+mw10.food.category.days = mw10.food %&gt;% 
+  # Recoding of outliers (change 8 days to 7 days)
+  mutate( hh_g08c  = if_else(hh_g08c&gt;7,7,hh_g08c) ) %&gt;%
+  #Combining Cereals and roots (Category A and Category B)
+  mutate(hh_g08a = if_else(hh_g08a==&quot;A&quot; | hh_g08a==&quot;B&quot;,&quot;AB&quot;,hh_g08a) ) %&gt;%
+  # combine A and B 
+  group_by(case_id,ea_id,hh_g08a) %&gt;%
+  summarise( hh_g08c =max (hh_g08c))
+
+
+###(2) compute FCS
+
+######################################################################
+#NOTES ON THE WEIGHTS OF THE DIFFERENT FOOD CATEGORIES
+# A Cereals, Grains and Cereal Products: Weight = 2
+# B Root, Tubers and Plantains: Weight = 2
+# C Nuts and Pulses: Weight = 3
+# D Vegetables: Weight = 1
+# E Meat, Fish and Animal Products: Weight = 4
+# F Fruits =&gt; weight = 1
+# G Milk/Milk Products: Weight = 4
+# H Fats/Oil =&gt; Weight = 0.5
+# I Sugar/Sugar Products/Honey: Weight = 0.5
+# J Spices/Condiments: Weight = 0
+######################################################################
+FWeight.mapping= read.table(text = &quot;
+category FWeight 
+                            AB 2
+                            C 3
+                            D 1
+                            F 1
+                            E 4
+                            G 4
+                            H 0.5
+                            I 0.5
+                            J 0&quot;, header = TRUE)
+
+
+
+FCS = mw10.food.category.days %&gt;%
+  mutate(
+    # find the weight from 
+    FWeight = with(FWeight.mapping,FWeight[hh_g08a %in% category])
+  ) %&gt;%
+  mutate( FCS = hh_g08c * FWeight ) %&gt;% 
+  group_by(case_id,ea_id) %&gt;%
+  summarise( FCS  = sum (FCS,na.rm = TRUE) )
+
+FCS = FCS %&gt;% filter(FCS!=0)
+mw10.merged = FCS
+
+
+### (3) recodeand compute HDDS 
+
+################################################################################
+#A diet diversity score is a household-measure of food security that captures ///
+#something about the quality of a diet. It is calculated by counting the number///
+#of foods or food groups from which a household acquired food over the survey ///
+#reference period (24 hours). 
+################################################################################
+
+HDDS = mw10.food.category.days %&gt;% 
+  #Exclude SUGAR and SPICES
+  filter(hh_g08a!=&quot;I&quot; &amp; hh_g08a!=&quot;J&quot;) %&gt;%
+  filter(  !is.na(hh_g08c) ) %&gt;%
+  mutate( HDDS = if_else( hh_g08c&gt;=1 ,1,0 )  ) %&gt;%
+  group_by(case_id,ea_id) %&gt;%
+  summarise(HDDS = sum(HDDS,na.rm = TRUE))
+
+HDDS = HDDS %&gt;% filter(HDDS!=0)
+
+mw10.merged = left_join(mw10.merged,HDDS, by=c(&quot;ea_id&quot;,&quot;case_id&quot;))
+
+### (4) Find, recode, and compute rCSI
+
+################################################################################
+#In the past 7 days, did you worry that your household would not have enough food
+#hh_h02a: &quot;In the past 7 days, how many days have you or someone in your ///
+#household had to: Rely on less preferred and/or less expensive foods?&quot;(WGT1)
+#hh_h02b: &quot;In the past 7 days, how many days have you or someone in your ///
+#household had to: Limit portion size at mealtimes?&quot; (WGT1)
+#hh_h02c: &quot;In the past 7 days, how many days have you or someone in your ///
+#household had to: Reduce number of meals eaten in a day?&quot; (WGT2)
+# hh_h02d &quot;In the past 7 days, how many days have you or someone in your ///
+#household had to: Restrict consumption by adults in order for small ///
+#children to eat?&quot; (WGT2)
+#hh_h02e &quot;In the past 7 days, how many days have you or someone in your ///
+#household had to: Borrow food, or rely on help from a friend or ///
+#relative?&quot; (WGT2)
+################################################################################
+
+mw10.rcsi &lt;- read_dta(file = paste(path,&quot;Household_Batch3of5_DTA/HH_MOD_H.dta&quot;,sep = &quot;&quot; ) )
+
+##Constructing rCSI
+rCSI = mw10.rcsi %&gt;%
+  mutate(rCSI = 1*hh_h02a + 1*hh_h02b + 2*hh_h02c + 2*hh_h02d +2*hh_h02e ) %&gt;%
+  mutate(rCSI = if_else(rCSI&gt;42 , 42 ,rCSI) ) %&gt;% 
+  dplyr::select(case_id,ea_id,rCSI)
+
+mw10.merged = left_join(mw10.merged,rCSI, by=c(&quot;ea_id&quot;,&quot;case_id&quot;))
+
+
+#######################################################################
+# 2. PICK UP GEOLOCATION and TIME(Year and month) and hhweight ########
+#######################################################################
+
+# pick up urban/rual, hhweight, FS_month, FS_year
+mw10.region&lt;- read_dta(file = paste(path,&quot;Household_Batch1of5_DTA/HH_MOD_A_FILT.dta&quot;,sep = &quot;&quot; ))
+
+mw10.region.rural = mw10.region %&gt;% 
+  mutate(rural = case_when(
+    reside == 1 ~ 0,
+    reside == 2 ~ 1)
+  ) %&gt;% 
+  mutate(FS_year = hh_a23c_1) %&gt;%
+  mutate(FS_month = hh_a23b_1) %&gt;%
+  dplyr::select(case_id,ea_id,rural, FS_year, FS_month, hh_wgt) %&gt;% rename(hhweight=hh_wgt)
+
+mw10.merged = left_join(mw10.merged,mw10.region.rural, by=c(&quot;ea_id&quot;,&quot;case_id&quot;))
+
+#######################################################################
+# 3. Pick up geolocation (lat/lon) and create &quot;round&quot;column ###########
+#######################################################################
+
+mw10.geo &lt;- read_dta(file = paste(path,&quot;HouseholdGeovariables.dta&quot;,sep = &quot;&quot; ))
+mw10.geo.clean = mw10.geo %&gt;%
+  dplyr::select(case_id,ea_id,lat_modified,lon_modified)
+
+mw10.merged = left_join(mw10.merged,mw10.geo.clean, by=c(&quot;ea_id&quot;,&quot;case_id&quot;)) %&gt;%
+  mutate(round = 2010) %&gt;%
+  rename(HHID = case_id)
+
+  
+#######################################################################
+# 4. Check output and export ##########################################
+#######################################################################
+head(mw10.merged)</code></pre>
+<pre><code>## # A tibble: 6 x 12
+## # Groups:   HHID [6]
+##   HHID      ea_id   FCS  HDDS  rCSI rural FS_year FS_month hhweight lat_modified
+##   &lt;chr&gt;     &lt;chr&gt; &lt;dbl&gt; &lt;dbl&gt; &lt;dbl&gt; &lt;dbl&gt;   &lt;dbl&gt;    &lt;dbl&gt;    &lt;dbl&gt;        &lt;dbl&gt;
+## 1 10101016~ 1010~  40.5     6    10     1    2010        4     127.        -9.81
+## 2 10101016~ 1010~  28       5     0     1    2010        4     127.        -9.81
+## 3 10101016~ 1010~  35       5     0     1    2010        4     127.        -9.81
+## 4 10101016~ 1010~  39       6     0     1    2010        4     127.        -9.81
+## 5 10101016~ 1010~  42.5     5     2     1    2010        4     127.        -9.81
+## 6 10101016~ 1010~  78       7     0     1    2010        4     127.        -9.81
+## # ... with 2 more variables: lon_modified &lt;dbl&gt;, round &lt;dbl&gt;</code></pre>
+</div>
+<div id="create-simple-plot" class="section level1">
+<h1>Create Simple Plot</h1>
+<p>I create a dummy variables which codify whether a household is Food Insecure or not based on two different meassures - FCS, rCSI using a certain threshold.
+It turns out that using FCS generates more food inscure household than rCSI.</p>
+<pre class="r"><code>plotdf = mw10.merged %&gt;%
+  mutate(rCSI_FI = if_else(rCSI &gt; 17 , 1 , 0) ) %&gt;% 
+  mutate(FCS_FI = if_else(FCS &lt; 35 , 1 ,0) ) %&gt;%
+  pivot_longer(
+  cols=rCSI_FI:FCS_FI,
+  names_to = &quot;FI&quot;,
+  values_to = &quot;FI_index&quot;
+  )
+
+ggplot(plotdf, aes(x= FI_index, color = FI)) +
+  geom_bar() + facet_grid(rural~FI) +
+  labs(title = &quot;Count FCS based FI index VS rCSI based FI index&quot;,
+  x = &quot;FCS vs rCSI&quot;, y = &quot;Count&quot;, color = &quot;Food Insecurity Base&quot;)</code></pre>
+<p><img src="https://example.com/post/2020-12-01-r-rmarkdown/index.en_files/figure-html/plot-1.png" width="2100" /></p>
+</div>
+</div>
+    <div class="post__footer">
+      
+        <span><a class="category" href="/categories/r/">R</a></span>
+
+
+
+
+      
+
+      
+        <span><a class="tag" href="/tags/lsms/">LSMS</a><a class="tag" href="/tags/r-markdown/">R Markdown</a><a class="tag" href="/tags/food-security/">Food Security</a><a class="tag" href="/tags/malawi/">Malawi</a></span>
+
+
+
+
+      
+    </div>
+
+    
+  </div>
+
+
+      </main>
+    </div><footer class="footer footer__base">
+  <ul class="footer__list">
+    <li class="footer__item">
+      &copy;
+      
+        Chungmann Kim
+        2022
+
+
+      
+    </li>
+    
+      <li class="footer__item">
+        <a
+          class="link"
+          href="/imprint/"
+          
+          title=""
+        >
+          imprint
+        </a>
+      </li>
+
+    
+  </ul>
+</footer>
+  
+  <script
+    type="text/javascript"
+    src="/js/medium-zoom.min.a3fd0638ada4e3cec287e49a604b4a828cfef33a669afe60b96575761fff5cf3.js"
+    integrity="sha256-o/0GOK2k487Ch&#43;SaYEtKgoz&#43;8zpmmv5guWV1dh//XPM="
+    crossorigin="anonymous"
+  ></script></body>
+</html>

@@ -1,37 +1,196 @@
 ---
-title: "R Markdown"
+title: "Food Insecurity Index Creation"
 author: "Chungmann Kim"
 date: "`r Sys.Date()`"
 categories: ["R"]
-tags: ["R Markdown", "plot", "regression"]
+tags: ["LSMS", "R Markdown", "Food Security", "Malawi"]
 ---
 
-```{r setup, include=FALSE}
-knitr::opts_chunk$set(collapse = TRUE)
+```{r, include=FALSE}
+knitr::opts_chunk$set(echo = FALSE,message = FALSE,warning = FALSE,dpi=300)
 ```
 
-# R Markdown
+```{r, include=FALSE}
+pack <- c('tidyverse','haven','janitor','zoo')
+install.packages(setdiff(pack, rownames(installed.packages())))
+sapply(pack,require,character.only=TRUE)
 
-This is an R Markdown document. Markdown is a simple formatting syntax for authoring HTML, PDF, and MS Word documents. For more details on using R Markdown see <http://rmarkdown.rstudio.com>.
-
-You can embed an R code chunk like this:
-
-```{r cars}
-summary(cars)
-fit <- lm(dist ~ speed, data = cars)
-fit
 ```
 
-# Including Plots
+# Wrangling Living Standards Measurement Survey(LSMS) Workbank Data 
 
-You can also embed plots. See Figure \@ref(fig:pie) for example:
+This r code chunk links different data sources together and creates a single dataframe with multiple food insecurity measures(e.g. Food consumption score(FCS), Household Diet Diverssity Score(HDDS), reduced Coping Strategy Index (rCSI)) computed and several other rosters that identify each observation.
 
-```{r pie, fig.cap='A fancy pie chart.', tidy=FALSE}
-par(mar = c(0, 1, 0, 1))
-pie(
-  c(280, 60, 20),
-  c('Sky', 'Sunny side of pyramid', 'Shady side of pyramid'),
-  col = c('#0292D8', '#F7EA39', '#C4B632'),
-  init.angle = -50, border = NA
-)
+```{r chunk1, warning = FALSE, echo=TRUE}
+#####################################################################
+########################    Malawi 2010    ##########################
+#####################################################################
+
+######################################################################
+##################### 1. Food security index #########################
+######################################################################
+
+### (1) Find data and recode
+
+path = "data/Malawi_2010/"
+
+mw10.food <- read_dta(file = paste(path,"Household_Batch3of5_DTA/HH_MOD_G2.dta",sep = "" ) )
+
+mw10.food.category.days = mw10.food %>% 
+  # Recoding of outliers (change 8 days to 7 days)
+  mutate( hh_g08c  = if_else(hh_g08c>7,7,hh_g08c) ) %>%
+  #Combining Cereals and roots (Category A and Category B)
+  mutate(hh_g08a = if_else(hh_g08a=="A" | hh_g08a=="B","AB",hh_g08a) ) %>%
+  # combine A and B 
+  group_by(case_id,ea_id,hh_g08a) %>%
+  summarise( hh_g08c =max (hh_g08c))
+
+
+###(2) compute FCS
+
+######################################################################
+#NOTES ON THE WEIGHTS OF THE DIFFERENT FOOD CATEGORIES
+# A Cereals, Grains and Cereal Products: Weight = 2
+# B Root, Tubers and Plantains: Weight = 2
+# C Nuts and Pulses: Weight = 3
+# D Vegetables: Weight = 1
+# E Meat, Fish and Animal Products: Weight = 4
+# F Fruits => weight = 1
+# G Milk/Milk Products: Weight = 4
+# H Fats/Oil => Weight = 0.5
+# I Sugar/Sugar Products/Honey: Weight = 0.5
+# J Spices/Condiments: Weight = 0
+######################################################################
+FWeight.mapping= read.table(text = "
+category FWeight 
+                            AB 2
+                            C 3
+                            D 1
+                            F 1
+                            E 4
+                            G 4
+                            H 0.5
+                            I 0.5
+                            J 0", header = TRUE)
+
+
+
+FCS = mw10.food.category.days %>%
+  mutate(
+    # find the weight from 
+    FWeight = with(FWeight.mapping,FWeight[hh_g08a %in% category])
+  ) %>%
+  mutate( FCS = hh_g08c * FWeight ) %>% 
+  group_by(case_id,ea_id) %>%
+  summarise( FCS  = sum (FCS,na.rm = TRUE) )
+
+FCS = FCS %>% filter(FCS!=0)
+mw10.merged = FCS
+
+
+### (3) recodeand compute HDDS 
+
+################################################################################
+#A diet diversity score is a household-measure of food security that captures ///
+#something about the quality of a diet. It is calculated by counting the number///
+#of foods or food groups from which a household acquired food over the survey ///
+#reference period (24 hours). 
+################################################################################
+
+HDDS = mw10.food.category.days %>% 
+  #Exclude SUGAR and SPICES
+  filter(hh_g08a!="I" & hh_g08a!="J") %>%
+  filter(  !is.na(hh_g08c) ) %>%
+  mutate( HDDS = if_else( hh_g08c>=1 ,1,0 )  ) %>%
+  group_by(case_id,ea_id) %>%
+  summarise(HDDS = sum(HDDS,na.rm = TRUE))
+
+HDDS = HDDS %>% filter(HDDS!=0)
+
+mw10.merged = left_join(mw10.merged,HDDS, by=c("ea_id","case_id"))
+
+### (4) Find, recode, and compute rCSI
+
+################################################################################
+#In the past 7 days, did you worry that your household would not have enough food
+#hh_h02a: "In the past 7 days, how many days have you or someone in your ///
+#household had to: Rely on less preferred and/or less expensive foods?"(WGT1)
+#hh_h02b: "In the past 7 days, how many days have you or someone in your ///
+#household had to: Limit portion size at mealtimes?" (WGT1)
+#hh_h02c: "In the past 7 days, how many days have you or someone in your ///
+#household had to: Reduce number of meals eaten in a day?" (WGT2)
+# hh_h02d "In the past 7 days, how many days have you or someone in your ///
+#household had to: Restrict consumption by adults in order for small ///
+#children to eat?" (WGT2)
+#hh_h02e "In the past 7 days, how many days have you or someone in your ///
+#household had to: Borrow food, or rely on help from a friend or ///
+#relative?" (WGT2)
+################################################################################
+
+mw10.rcsi <- read_dta(file = paste(path,"Household_Batch3of5_DTA/HH_MOD_H.dta",sep = "" ) )
+
+##Constructing rCSI
+rCSI = mw10.rcsi %>%
+  mutate(rCSI = 1*hh_h02a + 1*hh_h02b + 2*hh_h02c + 2*hh_h02d +2*hh_h02e ) %>%
+  mutate(rCSI = if_else(rCSI>42 , 42 ,rCSI) ) %>% 
+  dplyr::select(case_id,ea_id,rCSI)
+
+mw10.merged = left_join(mw10.merged,rCSI, by=c("ea_id","case_id"))
+
+
+#######################################################################
+# 2. PICK UP GEOLOCATION and TIME(Year and month) and hhweight ########
+#######################################################################
+
+# pick up urban/rual, hhweight, FS_month, FS_year
+mw10.region<- read_dta(file = paste(path,"Household_Batch1of5_DTA/HH_MOD_A_FILT.dta",sep = "" ))
+
+mw10.region.rural = mw10.region %>% 
+  mutate(rural = case_when(
+    reside == 1 ~ 0,
+    reside == 2 ~ 1)
+  ) %>% 
+  mutate(FS_year = hh_a23c_1) %>%
+  mutate(FS_month = hh_a23b_1) %>%
+  dplyr::select(case_id,ea_id,rural, FS_year, FS_month, hh_wgt) %>% rename(hhweight=hh_wgt)
+
+mw10.merged = left_join(mw10.merged,mw10.region.rural, by=c("ea_id","case_id"))
+
+#######################################################################
+# 3. Pick up geolocation (lat/lon) and create "round"column ###########
+#######################################################################
+
+mw10.geo <- read_dta(file = paste(path,"HouseholdGeovariables.dta",sep = "" ))
+mw10.geo.clean = mw10.geo %>%
+  dplyr::select(case_id,ea_id,lat_modified,lon_modified)
+
+mw10.merged = left_join(mw10.merged,mw10.geo.clean, by=c("ea_id","case_id")) %>%
+  mutate(round = 2010) %>%
+  rename(HHID = case_id)
+
+  
+#######################################################################
+# 4. Check output and export ##########################################
+#######################################################################
+head(mw10.merged)
+```
+
+# Create Simple Plot
+I create a dummy variables which codify whether a household is Food Insecure or not based on two different meassures - FCS, rCSI using a certain threshold.
+It turns out that using FCS generates more food inscure household than rCSI.
+
+```{r plot, warning = FALSE, echo=TRUE}
+plotdf = mw10.merged %>%
+  mutate(rCSI_FI = if_else(rCSI > 17 , 1 , 0) ) %>% 
+  mutate(FCS_FI = if_else(FCS < 35 , 1 ,0) ) %>%
+  pivot_longer(
+  cols=rCSI_FI:FCS_FI,
+  names_to = "FI",
+  values_to = "FI_index"
+  )
+
+ggplot(plotdf, aes(x= FI_index, color = FI)) +
+  geom_bar() + facet_grid(rural~FI) +
+  labs(title = "Count FCS based FI index VS rCSI based FI index",
+  x = "FCS vs rCSI", y = "Count", color = "Food Insecurity Base")
 ```

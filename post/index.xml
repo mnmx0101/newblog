@@ -1,0 +1,33 @@
+<?xml version="1.0" encoding="utf-8" standalone="yes"?>
+<rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
+  <channel>
+    <title>Posts on Chungmann Kim</title>
+    <link>https://example.com/post/</link>
+    <description>Recent content in Posts on Chungmann Kim</description>
+    <generator>Hugo -- gohugo.io</generator>
+    <language>en</language>
+    <lastBuildDate>Tue, 08 Mar 2022 00:00:00 +0000</lastBuildDate><atom:link href="https://example.com/post/index.xml" rel="self" type="application/rss+xml" />
+    <item>
+      <title>Food Insecurity Index Creation</title>
+      <link>https://example.com/post/2020-12-01-r-rmarkdown/</link>
+      <pubDate>Tue, 08 Mar 2022 00:00:00 +0000</pubDate>
+      
+      <guid>https://example.com/post/2020-12-01-r-rmarkdown/</guid>
+      
+        <description>Wrangling Living Standards Measurement Survey(LSMS) Workbank DataThis r code chunk links different data sources together and creates a single dataframe with multiple food insecurity measures(e.</description>
+      
+    </item>
+    
+    <item>
+      <title>Urban VS Rural Food Insecurity Measures over time in Malawi &#34;</title>
+      <link>https://example.com/post/rmarkdown2/lsms_cleaning/</link>
+      <pubDate>Tue, 08 Mar 2022 00:00:00 +0000</pubDate>
+      
+      <guid>https://example.com/post/rmarkdown2/lsms_cleaning/</guid>
+      
+        <description>Load Cleaned DataI first loaded a cleaned version of data which includes 3 distinctive measures of Food Insecurity : Food Consumption Score(FCS), Household Dietary Diversity Score(HDDS), Reduced Coping Strategy Index(rCSI) using the data from the World Bank.</description>
+      
+    </item>
+    
+  </channel>
+</rss>

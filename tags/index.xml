@@ -1,0 +1,88 @@
+<?xml version="1.0" encoding="utf-8" standalone="yes"?>
+<rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
+  <channel>
+    <title>Tags on Chungmann Kim</title>
+    <link>https://example.com/tags/</link>
+    <description>Recent content in Tags on Chungmann Kim</description>
+    <generator>Hugo -- gohugo.io</generator>
+    <language>en</language>
+    <lastBuildDate>Tue, 08 Mar 2022 00:00:00 +0000</lastBuildDate><atom:link href="https://example.com/tags/index.xml" rel="self" type="application/rss+xml" />
+    <item>
+      <title>Food Security</title>
+      <link>https://example.com/tags/food-security/</link>
+      <pubDate>Tue, 08 Mar 2022 00:00:00 +0000</pubDate>
+      
+      <guid>https://example.com/tags/food-security/</guid>
+      
+        <description></description>
+      
+    </item>
+    
+    <item>
+      <title>LSMS</title>
+      <link>https://example.com/tags/lsms/</link>
+      <pubDate>Tue, 08 Mar 2022 00:00:00 +0000</pubDate>
+      
+      <guid>https://example.com/tags/lsms/</guid>
+      
+        <description></description>
+      
+    </item>
+    
+    <item>
+      <title>Malawi</title>
+      <link>https://example.com/tags/malawi/</link>
+      <pubDate>Tue, 08 Mar 2022 00:00:00 +0000</pubDate>
+      
+      <guid>https://example.com/tags/malawi/</guid>
+      
+        <description></description>
+      
+    </item>
+    
+    <item>
+      <title>Plot</title>
+      <link>https://example.com/tags/plot/</link>
+      <pubDate>Tue, 08 Mar 2022 00:00:00 +0000</pubDate>
+      
+      <guid>https://example.com/tags/plot/</guid>
+      
+        <description></description>
+      
+    </item>
+    
+    <item>
+      <title>R Markdown</title>
+      <link>https://example.com/tags/r-markdown/</link>
+      <pubDate>Tue, 08 Mar 2022 00:00:00 +0000</pubDate>
+      
+      <guid>https://example.com/tags/r-markdown/</guid>
+      
+        <description></description>
+      
+    </item>
+    
+    <item>
+      <title>Urban-Rural</title>
+      <link>https://example.com/tags/urban-rural/</link>
+      <pubDate>Tue, 08 Mar 2022 00:00:00 +0000</pubDate>
+      
+      <guid>https://example.com/tags/urban-rural/</guid>
+      
+        <description></description>
+      
+    </item>
+    
+    <item>
+      <title>index</title>
+      <link>https://example.com/tags/index/</link>
+      <pubDate>Mon, 01 Jan 0001 00:00:00 +0000</pubDate>
+      
+      <guid>https://example.com/tags/index/</guid>
+      
+        <description></description>
+      
+    </item>
+    
+  </channel>
+</rss>

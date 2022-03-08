@@ -1,0 +1,55 @@
+---
+title: Urban VS Rural Food Insecurity Measures over time in Malawi "
+date: "`r Sys.Date()`"
+categories: ["R"]
+output: html_document
+tags: ["Plot","Food Security", "Urban-Rural"]
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+library(tidyverse)
+library(zoo)
+library(ggpubr)
+```
+
+## Load Cleaned Data
+
+I first loaded a cleaned version of data which includes 3 distinctive measures of Food Insecurity : Food Consumption Score(FCS), Household Dietary Diversity Score(HDDS), Reduced Coping Strategy Index(rCSI) using the data from the [World Bank](https://microdata.worldbank.org/index.php/catalog/2939).
+
+```{r Load-Malawi leaned Data}
+MW_2010 = read.csv(file = 'data/malawi-2013-LSMS-HH.csv')
+glimpse(MW_2010)
+
+```
+
+## Plot Food Consumption Score(FCS) of Malawi over time by URBAN/RURAL 
+
+
+```{r include_plot, warning = FALSE, echo=TRUE}
+
+#I first create mean measures for FCS both Household Sample Weight(hhweight) Weighted and Unweighted
+MW_2010$yearmon <- as.yearmon(paste(MW_2010$FS_year, MW_2010$FS_month), "%Y %m")
+
+MW_2010_month = MW_2010 %>%
+  group_by(rural, yearmon) %>%
+  mutate(wt_FCS = weighted.mean(FCS, hhweight)) %>% 
+  mutate(m_FCS = mean(FCS)) %>% 
+  distinct(wt_FCS, m_FCS)
+
+
+# Plot FCS(hhweight applied) by month and by rural VS urban
+mW_wtFCS_10 = ggplot(MW_2010_month, aes(yearmon, wt_FCS, colour = factor(rural))) + 
+  geom_line(aes(group = rural)) + 
+  geom_point() + xlab("month") + ylab("wt_FCS") + labs(colour = "Rural(=1)") + ggtitle("Malawi 10, Weighted FCS")
+
+
+# Plot FCS(hhweight "NOT" applied) by month and by rural VS urban
+mw_mFCS_10 =ggplot(MW_2010_month, aes(yearmon, m_FCS, colour = factor(rural))) + 
+  geom_line(aes(group = rural)) + 
+  geom_point() + xlab("month") + ylab("m_FCS") + labs(colour = "Rural(=1)") + ggtitle("Malawi 10, Unweighted FCS")
+
+ggarrange(mW_wtFCS_10, mw_mFCS_10, 
+          #labels = c("A", "B", "C"),
+          ncol = 1, nrow = 2)
+```
